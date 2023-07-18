@@ -1,0 +1,48 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#containers
+{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+#loadbuttons
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+#loadbuttons > button
+{
+    background-color: rgba(6, 148, 6, 0.664);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+#loadbyjscontainer, #loadbyfetchcontainer
+{
+    width: 400px;
+    min-height: 300px;
+    border: 1px solid;
+    margin: 20px;
+}
+#loadbyjscontainer > p, .personblock
+{
+    text-align: center;
+    background-color: lightgray;
+    margin: 10px;
+    padding: 10px;
+}
+
+.personblock > button
+{
+    border: none;
+    border-radius: 10px;
+}
