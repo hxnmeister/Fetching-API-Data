@@ -27,21 +27,76 @@ loadByJsButton.addEventListener("click", async () =>
 
 loadByFetchButton.addEventListener("click", async () => 
 {
-    const request = await fetch(apiUrl).then(result => result.json());
-
+    let request = await fetch(apiUrl).then(result => result.json());
+    
     loadByFetchContainer.innerHTML = "";
     request.map(x => loadByFetchContainer.innerHTML += 
         `
             <div id="${x.id}" class="personblock">
                 <p>${x.name}</p>
                 <div>
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button class="editbutton">Edit</button>
+                    <button class="deletebutton">Delete</button>
                 </div>
-                <form>
-                    <ipnut type="text">
-                    <ipnut type="submit" value="Save">
+                <form name="saveform" hidden>
+                    <input name="editedname" type="text">
+                    <input type="submit" value="Save" class="savebutton">
                 </form>
             </div>
         `);
+
+    loadByFetchContainer.querySelectorAll(".editbutton").forEach(button => 
+    {
+        button.addEventListener("click", (event) => 
+        {
+            form = event.currentTarget.parentNode.parentNode.querySelector(`[name="saveform"]`);
+            form.hidden = !form.hidden;
+        });
+    });
+    loadByFetchContainer.querySelectorAll(".deletebutton").forEach(button => 
+    {
+        button.addEventListener("click", async (event) => 
+        {
+            const currentElement = event.currentTarget.parentNode.parentNode;
+            currentElement.innerHTML += `<h2>Loading...</h2>`;
+            await fetch(`${apiUrl}/${currentElement.id}`, { method: "DELETE"}).then(x => 
+                {
+                    if(x.status === 200)
+                    {
+                        currentElement.remove();
+                        alert(`User with id: ${currentElement.id} was deleted!`);
+                    }
+                    else
+                    {
+                        alert("Something went wrong with error: " + x.status);
+                    }
+                });
+        })
+    });
+    loadByFetchContainer.querySelectorAll(`[name="saveform"]`).forEach(saveform => 
+    {
+        saveform.addEventListener("submit", async (event) => 
+        {
+            event.preventDefault();
+            event.currentTarget.hidden = true;
+
+            const newContent = event.currentTarget.editedname.value;
+            const currentElement = event.currentTarget.parentNode;
+            currentElement.innerHTML += `<h2>Loading...</h2>`;
+            await fetch(`${apiUrl}/${currentElement.id}`, {method: "PUT"}).then(x =>
+            {
+                if(x.status === 200)
+                {
+                    currentElement.querySelector("p").innerHTML = newContent;
+                    currentElement.querySelector("h2").remove();
+                }
+                else
+                {
+                    alert("Something went wrong with error: " + x.status);
+                }
+            });
+
+            
+        })
+    })
 })

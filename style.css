@@ -8,7 +8,7 @@
 #containers
 {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 20px;
 }
 #loadbuttons
@@ -41,8 +41,23 @@
     padding: 10px;
 }
 
-.personblock > button
+.editbutton, .deletebutton, .savebutton
 {
     border: none;
     border-radius: 10px;
+    padding: 5px 25px;
+    margin-top: 10px;
+    color: white;
+}
+.editbutton
+{
+    background-color: rgba(3, 91, 255, 0.623);
+}
+.deletebutton
+{
+    background-color: crimson;
+}
+.savebutton
+{
+    background-color: forestgreen;
 }
