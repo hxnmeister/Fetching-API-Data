@@ -83,18 +83,31 @@ loadByFetchButton.addEventListener("click", async () =>
             const newContent = event.currentTarget.editedname.value;
             const currentElement = event.currentTarget.parentNode;
             currentElement.innerHTML += `<h2>Loading...</h2>`;
-            await fetch(`${apiUrl}/${currentElement.id}`, {method: "PUT"}).then(x =>
+            await fetch(`${apiUrl}/${currentElement.id}`, 
             {
-                if(x.status === 200)
+                method: "PUT",
+                body: JSON.stringify
+                (
+                    {
+                        name: newContent
+                    },
+                ),
+                headers: 
                 {
-                    currentElement.querySelector("p").innerHTML = newContent;
-                    currentElement.querySelector("h2").remove();
+                    'Content-type': 'application/json; charset=UTF-8',
                 }
-                else
+            }).then(x => 
                 {
-                    alert("Something went wrong with error: " + x.status);
-                }
-            });
+                    if(x.status == 200)
+                    {
+                        currentElement.querySelector("h2").remove();
+                        x.json().then(item => currentElement.querySelector("p").innerHTML = item.name);
+                    }
+                    else
+                    {
+                        alert(x.statusText + ": " + x.status);
+                    }
+                })
 
             
         })
